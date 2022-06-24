@@ -334,6 +334,9 @@ typedef struct am_dir_cfg_rec {
     /* Send Expect Header. */
     int send_expect_header;
 
+    /* Send Protocol Binding. */
+    apr_hash_t *sp_protocol_binding;
+
 } am_dir_cfg_rec;
 
 /* Bitmask for PAOS service options */

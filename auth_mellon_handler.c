@@ -3003,6 +3003,7 @@ static int am_init_authn_request_common(request_rec *r,
     LassoLogin *login;
     LassoSamlp2AuthnRequest *request;
     const char *sp_name;
+    const char *sp_protocol_binding;
 
     *login_return = NULL;
 
@@ -3056,6 +3057,10 @@ static int am_init_authn_request_common(request_rec *r,
          * AssertionConsumerServiceURL) as there is no immediate function
          * like lasso_provider_get_assertion_consumer_service_url to get them.
          * So leave that empty for now, it is not strictly required */
+        sp_protocol_binding = am_get_config_langstring(dir_cfg->sp_protocol_binding, NULL);
+        if (sp_protocol_binding) {
+            lasso_assign_string(request->ProtocolBinding, sp_protocol_binding);
+        }
     }
 
     request->ForceAuthn = FALSE;

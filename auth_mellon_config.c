@@ -1804,6 +1804,13 @@ const command_rec auth_mellon_commands[] = {
         OR_AUTHCFG,
         "Send the Expect Header. Default is 'on'."
         ),
+    AP_INIT_TAKE12(
+        "MellonSPprotocolBinding",
+        am_set_langstring_slot,
+        (void *)APR_OFFSETOF(am_dir_cfg_rec, sp_protocol_binding),
+        OR_AUTHCFG,
+        "Add ProtocolBinding to request."
+        ),
 
     {NULL}
 };
@@ -1915,6 +1922,7 @@ void *auth_mellon_dir_config(apr_pool_t *p, char *d)
     dir->enabled_invalidation_session = default_enabled_invalidation_session;
 
     dir->send_expect_header = default_send_expect_header;
+    dir->sp_protocol_binding = apr_hash_make(p);
 
     return dir;
 }
@@ -2186,6 +2194,11 @@ void *auth_mellon_dir_merge(apr_pool_t *p, void *base, void *add)
         (add_cfg->send_expect_header != default_send_expect_header ?
          add_cfg->send_expect_header :
          base_cfg->send_expect_header);
+
+    new_cfg->sp_protocol_binding = 
+        (add_cfg->sp_protocol_binding ?
+         add_cfg->sp_protocol_binding :
+         base_cfg->sp_protocol_binding);
 
     return new_cfg;
 }
